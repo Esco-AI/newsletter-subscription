@@ -1,102 +1,195 @@
+"use client";
 import Image from "next/image";
+import { useState } from "react";
+
+const AREAS = [
+  "IVF & Embryology",
+  "Cleanroom & Containment",
+  "Pharmaceutical Production",
+  "Medical Equipment & Safety",
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [submitted, setSubmitted] = useState(false);
+  const [areas, setAreas] = useState<string[]>([]);
+  const [consent, setConsent] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitted(true);
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-between">
+      <main className="mx-auto w-full flex-1">
+        {/* Company Title and Product List */}
+        <div className="mb-8 w-full">
+          <div className="relative w-full h-48 md:h-64 rounded-lg overflow-hidden">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+              src="/product-banner.png"
+              alt="Product"
+              fill
+              className="object-cover"
+              priority
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+        </div>
+
+        {/* Newsletter Form */}
+        {!submitted ? (
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-xl shadow-md p-8 m-8 flex flex-col gap-4 max-w-2xl mx-auto text-black"
           >
-            Read our docs
+            <label className="font-semibold">Name</label>
+            <input
+              type="text"
+              required
+              className="border rounded p-2"
+              placeholder="Your Name"
+            />
+            <label className="font-semibold">Email</label>
+            <input
+              type="email"
+              required
+              className="border rounded p-2"
+              placeholder="you@email.com"
+            />
+            <label className="font-semibold">Area of Interest</label>
+            <div className="flex flex-col gap-2">
+              {AREAS.map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-2 cursor-pointer relative pl-7"
+                >
+                  <input
+                    type="checkbox"
+                    name="area"
+                    value={item}
+                    checked={areas.includes(item)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setAreas([...areas, item]);
+                      } else {
+                        setAreas(areas.filter((area) => area !== item));
+                      }
+                    }}
+                    className="peer absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-gray-400 checked:border-blue-600 checked:bg-blue-600 transition duration-200 appearance-none cursor-pointer"
+                  />
+                  {/* Custom dot for checked */}
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border border-gray-400 flex items-center justify-center pointer-events-none transition duration-200 cursor-pointer">
+                    {areas.includes(item) && (
+                      <span className="w-3 h-3 rounded-full bg-white"></span>
+                    )}
+                  </span>
+                  <span>{item}</span>
+                </label>
+              ))}
+            </div>
+            <label className="flex items-center gap-2 mt-2">
+              <input
+                type="checkbox"
+                required
+                checked={consent}
+                onChange={() => setConsent(!consent)}
+                className="accent-blue-600"
+              />
+              I agree to receive monthly educational content from Esco
+              Lifesciences.
+            </label>
+            <span className="text-gray-500 text-xs">
+              (Subscribe Now. Unsubscribe anytime)
+            </span>
+            <button
+              type="submit"
+              className="mt-4 bg-[#005D9F] text-white rounded-lg py-2 font-semibold hover:bg-[#004C80] transition cursor-pointer"
+            >
+              Subscribe Now
+            </button>
+          </form>
+        ) : (
+          <div className="m-auto p-8 text-center text-[#00467F] text-xl">
+            Thank you for subscribing! 🎉
+            <br />
+            You’ll receive our next newsletter in your inbox.
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-[#00467F] text-white px-4 py-8">
+        <div className="flex justify-center gap-8 mb-6">
+          <a href="#" aria-label="Facebook" className="hover:opacity-80">
+            <Image
+              src="/facebook-logo.svg"
+              alt="Facebook"
+              width={32}
+              height={32}
+            />
+          </a>
+          <a href="#" aria-label="Instagram" className="hover:opacity-80">
+            <Image
+              src="/insta-logo.svg"
+              alt="Instagram"
+              width={32}
+              height={32}
+            />
+          </a>
+          <a href="#" aria-label="X" className="hover:opacity-80">
+            <Image src="/x-logo.svg" alt="X" width={32} height={32} />
+          </a>
+          <a href="#" aria-label="Website" className="hover:opacity-80">
+            <Image src="/web-logo.svg" alt="Website" width={32} height={32} />
+          </a>
+          <a href="#" aria-label="TikTok" className="hover:opacity-80">
+            <Image src="/tiktok-logo.svg" alt="TikTok" width={32} height={32} />
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <div className="text-center mb-2">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="/ESCO-logo-1.svg"
+            alt="ESCO"
+            width={100}
+            height={100}
+            className="mx-auto mb-2"
+            style={{ maxHeight: 40 }}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        </div>
+        <div className="text-center text-sm mb-4">
+          Copyright (C) |2025| Esco Micro Pte. Ltd.. All rights reserved.
+        </div>
+        <div className="text-center text-sm mb-2">
+          <span className="font-semibold">Our mailing address:</span>
+          <br />
+          <a
+            href="https://www.escolifesciences.com/contact-us"
+            className="underline"
+          >
+            https://www.escolifesciences.com/contact-us
+          </a>
+          <br />
+          <a href="mailto:ede.info@escolifesciences.com" className="underline">
+            ede.info@escolifesciences.com
+          </a>
+          <br />
+          <a
+            href="mailto:olivia.tvaldez@escolifesciences.com"
+            className="underline"
+          >
+            olivia.tvaldez@escolifesciences.com
+          </a>
+        </div>
+        <div className="text-center text-sm">
+          Want to change how you receive these emails? <br />
+          You can{" "}
+          <a href="#" className="underline">
+            update your preferences
+          </a>{" "}
+          or{" "}
+          <a href="#" className="underline">
+            unsubscribe
+          </a>
+        </div>
       </footer>
     </div>
   );
