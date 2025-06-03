@@ -1,18 +1,24 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { getNames } from "country-list";
+import React from "react";
 
 const AREAS = [
   "IVF & Embryology",
   "Cleanroom & Containment",
   "Pharmaceutical Production",
   "Medical Equipment & Safety",
+  "Laboratory Equipment & General Lab Solutions",
+  "Educational Content & Scientific Updates",
 ];
 
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const [areas, setAreas] = useState<string[]>([]);
   const [consent, setConsent] = useState(false);
+  const [country, setCountry] = useState("");
+  const countries = getNames();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,6 +61,26 @@ export default function Home() {
               className="border rounded p-2"
               placeholder="you@email.com"
             />
+            <label htmlFor="country" className="font-semibold">
+              Country
+            </label>
+            <select
+              id="country"
+              className="border rounded p-2"
+              required
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            >
+              <option value="" disabled>
+                Select your country
+              </option>
+              {countries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+
             <label className="font-semibold">Area of Interest</label>
             <div className="flex flex-col gap-2">
               {AREAS.map((item) => (
