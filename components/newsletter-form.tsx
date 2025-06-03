@@ -102,7 +102,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 id="country"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                className="block w-full px-3 py-3 text-gray-400 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition"
+                className="block w-full px-3 py-3 text-gray-400 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition cursor-pointer"
               >
                 <option value="" disabled className="text-gray-700">
                   Select your country
@@ -139,9 +139,8 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                           setAreas(areas.filter((area) => area !== item));
                         }
                       }}
-                      className="sr-only" // Hide original checkbox
+                      className="sr-only"
                     />
-                    {/* The custom checkbox UI */}
                     <div
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
                         areas.includes(item)
@@ -149,7 +148,6 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                           : "bg-gray-200 border-gray-300"
                       }`}
                     >
-                      {/* Inner dot appears when checked */}
                       {areas.includes(item) && (
                         <div className="w-2 h-2 rounded-full bg-white"></div>
                       )}
@@ -168,7 +166,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 checked={consent}
                 onChange={() => setConsent(!consent)}
-                className="sr-only" // Hide original checkbox
+                className="sr-only"
               />
               <div
                 className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
@@ -199,7 +197,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
           <div className="lg:col-span-2">
             <button
               type="submit"
-              className="w-full mt-4 bg-[#005D9F] text-white rounded-lg py-3 px-6 font-semibold hover:bg-[#004C80] transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg"
+              className="w-full mt-4 bg-[#005D9F] text-white rounded-lg py-3 px-6 font-semibold hover:bg-[#004C80] transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg cursor-pointer"
             >
               Subscribe Now
             </button>
