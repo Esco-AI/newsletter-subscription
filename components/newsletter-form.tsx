@@ -1,6 +1,7 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { getNames } from "country-list";
+import { ChevronDown, CircleHelp } from "lucide-react";
 
 const AREAS = [
   "IVF & Embryology",
@@ -21,12 +22,45 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   const [country, setCountry] = useState("");
   const [areas, setAreas] = useState<string[]>([]);
   const [consent, setConsent] = useState(false);
+  const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+
+  const countrySelectRef = useRef<HTMLDivElement>(null);
 
   const countries = useMemo(() => getNames(), []);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        countrySelectRef.current &&
+        !countrySelectRef.current.contains(event.target as Node)
+      ) {
+        setIsCountryDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [countrySelectRef]);
+
+  function handleAreaChange(item: string) {
+    setAreas((prevAreas) => {
+      if (prevAreas.includes(item)) {
+        return prevAreas.filter((area) => area !== item);
+      } else {
+        return [...prevAreas, item];
+      }
+    });
+  }
+
+  function handleCountrySelect(selectedCountry: string) {
+    setCountry(selectedCountry);
+    setIsCountryDropdownOpen(false);
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // You can handle submission logic here (e.g., API call)
     console.log({
       name,
       email,
@@ -38,28 +72,27 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   }
 
   return (
-    <div className="bg-gray-50 flex items-center justify-center p-4 my-8">
+    <div className="flex items-center justify-center p-3 h-screen">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl shadow-xl p-8 md:p-12 lg:p-16 w-full max-w-4xl"
+        className="bg-white rounded-2xl shadow-xl py-[86px] px-16 w-full h-full"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
+        <div className="flex flex-col gap-6">
           <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              Subscribe to Our Newsletter
+            <h2 className="text-3xl font-bold text-[#00467F] mb-1">
+              Subscribe to our Newsletter
             </h2>
-            <p className="text-gray-600">
+            <p className="text-[#00467F]">
               Stay updated with the latest in life sciences.
             </p>
           </div>
-
           <div className="space-y-6">
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-sm font-normal text-[#4B4B4B] mb-2 flex items-center"
               >
-                Name
+                Name <CircleHelp size={14} className="ml-1 text-[#8E8E8E]" />
               </label>
               <input
                 id="name"
@@ -67,7 +100,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="block w-full px-4 py-3 text-gray-700 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition"
+                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500"
                 placeholder="Your Name"
               />
             </div>
@@ -75,9 +108,9 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-sm font-medium text-[#4B4B4B] mb-2 flex items-center"
               >
-                Email
+                Email <CircleHelp size={16} className="ml-1 text-[#8E8E8E]" />
               </label>
               <input
                 id="email"
@@ -85,46 +118,66 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full px-4 py-3 text-gray-700 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition"
-                placeholder="your@email.com"
+                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500"
+                placeholder="Your Email"
               />
             </div>
 
-            <div>
+            <div className="relative" ref={countrySelectRef}>
               <label
-                htmlFor="country"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                htmlFor="country-custom-select"
+                className="block text-sm font-medium text-[#4B4B4B] mb-2"
               >
-                Country{" "}
-                <span className="text-gray-500 font-normal">(optional)</span>
+                Country
+                <span className="text-gray-500 font-normal">(Optional)</span>
               </label>
-              <select
-                id="country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="block w-full px-3 py-3 text-gray-700 bg-gray-100 border-transparent rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white focus:border-transparent transition cursor-pointer"
+              <div
+                id="country-custom-select"
+                className="w-full px-4 py-3 border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500 transition cursor-pointer flex items-center justify-between"
+                onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setIsCountryDropdownOpen(!isCountryDropdownOpen);
+                  }
+                }}
               >
-                <option value="" disabled className="text-gray-700">
-                  Select your country
-                </option>
-                {countries.map((countryName) => (
-                  <option key={countryName} value={countryName}>
-                    {countryName}
-                  </option>
-                ))}
-              </select>
+                <span className={country ? "text-[#4B4B4B]" : "text-[#8E8E8E]"}>
+                  {country || "Select your country"}
+                </span>
+                <ChevronDown
+                  size={20}
+                  className={`text-[#8E8E8E] transition-transform ${
+                    isCountryDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </div>
+
+              {isCountryDropdownOpen && (
+                <div className="absolute z-10 w-full bg-white border border-[#E4E9F2] rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
+                  {countries.map((countryName) => (
+                    <div
+                      key={countryName}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-[#4B4B4B]"
+                      onClick={() => handleCountrySelect(countryName)}
+                    >
+                      {countryName}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-
-          <div className="space-y-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div>
+            <label className="block text-sm font-medium text-[#4B4B4B] mb-4">
               Area of Interest
             </label>
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
               {AREAS.map((item) => (
                 <label
                   key={item}
-                  className="flex items-center space-x-3 cursor-pointer"
+                  className="flex items-center space-x-3 cursor-pointer group"
                 >
                   <div className="relative">
                     <input
@@ -132,34 +185,30 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                       name="area"
                       value={item}
                       checked={areas.includes(item)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setAreas([...areas, item]);
-                        } else {
-                          setAreas(areas.filter((area) => area !== item));
-                        }
-                      }}
+                      onChange={() => handleAreaChange(item)}
                       className="sr-only"
                     />
                     <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                        areas.includes(item)
-                          ? "bg-blue-600 border-blue-600"
-                          : "bg-gray-200 border-gray-300"
-                      }`}
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200
+                        ${
+                          areas.includes(item)
+                            ? "border-[#00467F]"
+                            : "border-[#E4E9F2]"
+                        }
+                        group-hover:border-blue-500
+                      `}
                     >
                       {areas.includes(item) && (
-                        <div className="w-2 h-2 rounded-full bg-white"></div>
+                        <div className="absolute w-2.5 h-2.5 rounded-full bg-[#00467F] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                       )}
                     </div>
                   </div>
-                  <span className="text-gray-700">{item}</span>
+                  <span className="text-[#4B4B4B]">{item}</span>
                 </label>
               ))}
             </div>
           </div>
-
-          <div className="lg:col-span-2 mt-4">
+          <div className="mt-4">
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -169,10 +218,10 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 className="sr-only"
               />
               <div
-                className={`w-5 h-5 rounded border-2 transition-all duration-200 ${
+                className={`w-5 h-5 rounded p-0.5 border-2 transition-all duration-200 flex items-center justify-center hover:border-[#00467F] ${
                   consent
-                    ? "bg-blue-600 border-blue-600"
-                    : "bg-gray-200 border-gray-300"
+                    ? "bg-[#00467F] border-[#00467F]"
+                    : "bg-white border-[#E4E9F2]"
                 }`}
               >
                 {consent && (
@@ -184,20 +233,19 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                   </svg>
                 )}
               </div>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-[#2E3A59] font-normal">
                 I agree to receive monthly educational content from Esco
                 Lifesciences.
               </span>
             </label>
-            <p className="text-xs text-gray-500 mt-2 pl-8">
+            <p className="text-xs text-[#8E8E8E] font-normal mt-1 pl-8">
               (Subscribe Now. Unsubscribe anytime)
             </p>
           </div>
-
-          <div className="lg:col-span-2">
+          <div>
             <button
               type="submit"
-              className="w-full mt-4 bg-[#005D9F] text-white rounded-lg py-3 px-6 font-semibold hover:bg-[#004C80] transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-lg cursor-pointer"
+              className="w-full mt-4 bg-[#005D9F] text-white text-base font-normal rounded-lg py-3 px-6 hover:bg-[#0070C0] shadow-lg cursor-pointer"
             >
               Subscribe Now
             </button>

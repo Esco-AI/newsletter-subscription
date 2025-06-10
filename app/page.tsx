@@ -25,7 +25,7 @@ export default function Home() {
           />
         </div>
         <div className="flex-1 flex flex-col justify-center pl-[89px]">
-          <h1 className="text-[2rem] leading-snug font-normal text-[#00467F] mb-[43px]">
+          <h1 className="text-4xl leading-snug font-normal text-[#00467F] mb-[43px]">
             Connect with us for expert insights, practical tips, and the latest
             advancements in laboratory safety and innovation.
           </h1>
@@ -36,7 +36,7 @@ export default function Home() {
           <div className="flex gap-4">
             <button
               onClick={() => router.push("/newsletter-subs")}
-              className="bg-[#00467F] hover:bg-[#00345c] transition-colors w-[275px] h-[48px] text-white rounded font-medium cursor-pointer border-none"
+              className="bg-[#00467F] hover:bg-[#0070C0] transition-colors w-[275px] h-[48px] text-white rounded font-medium cursor-pointer border-none"
             >
               Subscribe for Expert Insights
             </button>
