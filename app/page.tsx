@@ -13,9 +13,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row bg-white">
-      {/* Left section - Adjusted for desktop content centering */}
+      {/* Left section */}
       <div className="flex flex-col w-full max-w-full lg:max-w-[870px] pb-8 lg:pb-0">
-        {/* NEW WRAPPER FOR LOGO + CONTENT FOR DESKTOP CENTERING */}
         <div className="flex flex-col flex-grow lg:justify-center lg:min-h-screen">
           {/* Logo at top */}
           <div className="flex items-center justify-center pt-8 pb-2 lg:justify-start lg:pl-[52px] lg:pt-[53px] lg:pb-0">
@@ -60,7 +59,7 @@ export default function Home() {
             <div className="flex flex-col gap-3 w-full max-w-sm mx-auto lg:flex-row lg:justify-start lg:gap-4 lg:w-auto lg:max-w-none lg:mx-0">
               <button
                 onClick={() => router.push("/newsletter-subs")}
-                className="w-full h-[50px] bg-[#00467F] hover:bg-[#0070C0] transition-colors text-white rounded-sm shadow-md text-base font-normal lg:w-auto lg:px-8"
+                className="w-full h-[50px] bg-[#00467F] hover:bg-[#0070C0] transition-colors text-white rounded-sm shadow-md text-base font-normal lg:px-8 lg:w-[275px]"
               >
                 Subscribe for Expert Insights
               </button>
@@ -68,7 +67,7 @@ export default function Home() {
                 href="https://www.escolifesciences.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full h-[50px] flex items-center justify-center border border-gray-300 text-[#00467F] rounded-sm bg-white hover:bg-gray-100 transition text-base font-normal lg:w-auto lg:px-8"
+                className="w-full h-[50px] flex items-center justify-center border border-gray-300 text-[#00467F] rounded-sm bg-white hover:bg-gray-100 transition text-base font-normal lg:w-auto lg:px-8 lg:flex-1"
               >
                 Visit our Website
               </a>
@@ -77,7 +76,7 @@ export default function Home() {
         </div>
       </div>
       {/* Right section */}
-      <div className="hidden lg:flex gap-6 px-0 lg:px-[98px]">
+      <div className="hidden lg:flex gap-6 px-0 lg:mx-auto">
         <VerticalTicker images={leftImages} direction="down" speed={30} />
         <VerticalTicker images={rightImages} direction="up" speed={30} />
       </div>

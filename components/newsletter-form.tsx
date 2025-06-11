@@ -75,14 +75,14 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
     <div className="flex items-center justify-center p-3 min-h-screen lg:h-screen">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl shadow-xl py-[86px] px-4 sm:px-8 md:px-12 lg:px-16 w-full h-full"
+        className="bg-white rounded-2xl shadow-xl py-6 lg:py-[86px] px-4 sm:px-8 md:px-12 lg:px-16 w-full h-full"
       >
         <div className="flex flex-col gap-6">
           <div className="lg:col-span-2">
-            <h2 className="lg:text-[32px] text-2xl font-bold text-[#00467F] mb-1">
+            <h2 className="lg:text-[32px] text-xl font-bold text-[#00467F] mb-1">
               Subscribe to our Newsletter
             </h2>
-            <p className="text-[#00467F] text-base">
+            <p className="text-[#00467F] lg:text-base text-xs">
               Stay updated with the latest in life sciences.
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
+                className="block w-full px-4 py-3 text-[#4B4B4B] text-sm lg:text-sm border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
                 placeholder="Your Name"
               />
             </div>
@@ -118,7 +118,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
+                className="block w-full px-4 py-3 text-[#4B4B4B] text-sm lg:text-sm border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
                 placeholder="Your Email"
               />
             </div>
@@ -129,11 +129,14 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 className="block text-sm font-medium text-[#4B4B4B] mb-2"
               >
                 Country
-                <span className="text-gray-500 font-normal"> (Optional)</span>
+                <span className="text-gray-500 font-normal text-sm">
+                  {" "}
+                  (Optional)
+                </span>
               </label>
               <div
                 id="country-custom-select"
-                className="w-full px-4 py-3 border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F] transition cursor-pointer flex items-center justify-between"
+                className="w-full px-4 py-3 text-sm border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F] transition cursor-pointer flex items-center justify-between"
                 onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -159,7 +162,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                   {countries.map((countryName) => (
                     <div
                       key={countryName}
-                      className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-[#4B4B4B]"
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-[#4B4B4B] text-sm"
                       onClick={() => handleCountrySelect(countryName)}
                     >
                       {countryName}
@@ -170,14 +173,14 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
             </div>
           </div>
           <div>
-            <label className="block text-base font-medium text-[#4B4B4B] mb-4">
+            <label className="block text-sm lg:text-base font-medium text-[#4B4B4B] mb-4">
               Area of Interest
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
               {AREAS.map((item) => (
                 <label
                   key={item}
-                  className="flex items-center space-x-3 cursor-pointer group"
+                  className="flex items-center space-x-3 cursor-pointer group text-sm lg:text-base"
                 >
                   <div className="relative text-[#4B4B4B]">
                     <input
@@ -233,7 +236,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                   </svg>
                 )}
               </div>
-              <span className="text-sm text-[#2E3A59] font-normal">
+              <span className="text-sm text-[#2E3A59] font-normal flex-1 min-w-0">
                 I agree to receive monthly educational content from Esco
                 Lifesciences.
               </span>
