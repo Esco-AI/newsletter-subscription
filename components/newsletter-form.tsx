@@ -72,21 +72,21 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   }
 
   return (
-    <div className="flex items-center justify-center p-3 h-screen">
+    <div className="flex items-center justify-center p-3 min-h-screen lg:h-screen">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-2xl shadow-xl py-[86px] px-16 w-full h-full"
+        className="bg-white rounded-2xl shadow-xl py-[86px] px-4 sm:px-8 md:px-12 lg:px-16 w-full h-full"
       >
         <div className="flex flex-col gap-6">
           <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold text-[#00467F] mb-1">
+            <h2 className="lg:text-[32px] text-2xl font-bold text-[#00467F] mb-1">
               Subscribe to our Newsletter
             </h2>
-            <p className="text-[#00467F]">
+            <p className="text-[#00467F] text-base">
               Stay updated with the latest in life sciences.
             </p>
           </div>
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <label
                 htmlFor="name"
@@ -100,7 +100,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500"
+                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
                 placeholder="Your Name"
               />
             </div>
@@ -118,7 +118,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500"
+                className="block w-full px-4 py-3 text-[#4B4B4B] border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F]"
                 placeholder="Your Email"
               />
             </div>
@@ -133,7 +133,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
               </label>
               <div
                 id="country-custom-select"
-                className="w-full px-4 py-3 border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-blue-500 transition cursor-pointer flex items-center justify-between"
+                className="w-full px-4 py-3 border border-[#E4E9F2] rounded-lg outline-none focus:border-[#00467F] hover:border-[#00467F] transition cursor-pointer flex items-center justify-between"
                 onClick={() => setIsCountryDropdownOpen(!isCountryDropdownOpen)}
                 tabIndex={0}
                 onKeyDown={(e) => {
@@ -170,7 +170,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-[#4B4B4B] mb-4">
+            <label className="block text-base font-medium text-[#4B4B4B] mb-4">
               Area of Interest
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
@@ -179,7 +179,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                   key={item}
                   className="flex items-center space-x-3 cursor-pointer group"
                 >
-                  <div className="relative">
+                  <div className="relative text-[#4B4B4B]">
                     <input
                       type="checkbox"
                       name="area"
@@ -195,7 +195,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                             ? "border-[#00467F]"
                             : "border-[#E4E9F2]"
                         }
-                        group-hover:border-blue-500
+                        group-hover:border-[#00467F]
                       `}
                     >
                       {areas.includes(item) && (

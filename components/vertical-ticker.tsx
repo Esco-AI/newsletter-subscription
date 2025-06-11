@@ -26,7 +26,7 @@ export default function VerticalTicker({
       : { y: [0, -moveDistance] };
 
   return (
-    <div className="overflow-hidden h-screen w-[226px] rounded-[18px] relative">
+    <div className="hidden lg:block overflow-hidden h-screen w-[226px] rounded-[18px] relative">
       <motion.div
         animate={animation}
         transition={{
