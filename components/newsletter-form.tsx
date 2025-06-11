@@ -129,7 +129,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 className="block text-sm font-medium text-[#4B4B4B] mb-2"
               >
                 Country
-                <span className="text-gray-500 font-normal">(Optional)</span>
+                <span className="text-gray-500 font-normal"> (Optional)</span>
               </label>
               <div
                 id="country-custom-select"

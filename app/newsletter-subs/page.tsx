@@ -41,7 +41,7 @@ export default function NewsletterSubsPage() {
         </div>
       </div>
 
-      <div>
+      <div className="w-full h-full">
         {!submitted ? (
           <NewsletterForm onSuccess={() => setSubmitted(true)} />
         ) : (
