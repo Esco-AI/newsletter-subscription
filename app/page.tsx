@@ -56,10 +56,10 @@ export default function Home() {
               Together, let’s build safer, smarter labs—because your work drives
               progress.
             </p>
-            <div className="flex flex-col gap-3 w-full max-w-sm mx-auto lg:flex-row lg:justify-start lg:gap-4 lg:w-auto lg:max-w-none lg:mx-0">
+            <div className="flex flex-col gap-3 w-full max-w-sm mx-auto lg:flex-row lg:justify-start lg:gap-4 lg:w-auto lg:max-w-full lg:mx-0">
               <button
                 onClick={() => router.push("/newsletter-subs")}
-                className="w-full h-[50px] bg-[#00467F] hover:bg-[#0070C0] transition-colors text-white rounded-sm shadow-md text-base font-normal lg:px-8 lg:w-[275px]"
+                className="w-full h-[50px] bg-[#00467F] hover:bg-[#0070C0] transition-colors text-white rounded-sm shadow-md text-base font-normal lg:px-4 lg:w-[275px]"
               >
                 Subscribe for Expert Insights
               </button>
