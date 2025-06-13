@@ -1,43 +1,70 @@
-import { CheckCircle } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function SubscriptionSuccess() {
   return (
-    <div className="flex items-center justify-center p-3 min-h-screen lg:h-screen w-full">
+    // This outer container is now simplified to just ensure full size.
+    <div className="w-full h-full">
       <motion.div
-        className="flex flex-col items-center justify-center text-center bg-white rounded-2xl shadow-xl p-4 sm:p-8 w-full h-full"
-        initial={{ opacity: 0, scale: 0.9 }}
+        // The key change is REMOVING lg:h-auto, so h-full applies to all screen sizes.
+        className="bg-white w-full flex flex-col items-center justify-center text-center p-8 relative shadow-xl h-full rounded-3xl"
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
+        {/* ESCO Logo (hidden on mobile, visible on desktop) */}
         <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-            delay: 0.2,
-          }}
+          className="absolute top-8 left-8 hidden lg:block"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <CheckCircle className="text-green-500" size={60} strokeWidth={2} />
+          <Image
+            src="/ESCO-logo-2.svg"
+            alt="ESCO Logo"
+            width={130}
+            height={52}
+          />
         </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-6 text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 leading-tight"
-        >
-          Thank You for Subscribing!
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-2 text-xs sm:text-sm md:text-base text-gray-600 px-4 leading-relaxed"
-        >
-          You’re all set. You'll receive our next newsletter in your inbox soon.
-        </motion.p>
+
+        {/* Centered Content */}
+        <div className="flex flex-col items-center">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              delay: 0.2,
+            }}
+          >
+            <Image
+              src="/check-mark-icon.svg"
+              alt="Success Checkmark"
+              width={128}
+              height={95}
+            />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="my-6 text-3xl md:text-4xl font-normal text-[#00467F]"
+          >
+            Thank you for Subscribing
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-base text-[#2E3A59] max-w-sm"
+          >
+            You’re all set. You’ll receive our next newsletter in your inbox
+            soon.
+          </motion.p>
+        </div>
       </motion.div>
     </div>
   );

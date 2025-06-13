@@ -9,8 +9,8 @@ import { motion } from "framer-motion";
 export default function Home() {
   const router = useRouter();
 
-  const leftImages = ["/image-1.png", "/image-2.png", "/image-3.png"];
-  const rightImages = ["/image-4.png", "/image-5.png", "/image-6.png"];
+  const leftImages = ["/image-1.jpg", "/image-5.jpg", "/image-3.jpg"];
+  const rightImages = ["/image-4.jpg", "/image-2.jpg", "/image-6.jpg"];
   const carouselImage = [...leftImages];
 
   // --- Animation Variants ---
@@ -129,7 +129,7 @@ export default function Home() {
                 onClick={() =>
                   window.open("https://www.escolifesciences.com", "_blank")
                 }
-                className="w-full h-[50px] flex items-center justify-center border border-gray-300 text-[#00467F] rounded-md bg-white hover:bg-gray-100 transition text-base font-normal lg:w-auto lg:px-8 lg:flex-1"
+                className="w-full h-[50px] flex items-center justify-center border border-gray-300 text-[#00467F] rounded-md bg-white hover:bg-gray-100 transition text-base font-normal lg:w-auto lg:px-8 lg:flex-1 cursor-pointer"
               >
                 Visit our Website
               </motion.button>

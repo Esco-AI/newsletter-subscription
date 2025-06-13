@@ -10,7 +10,6 @@ import { motion } from "framer-motion";
 export default function NewsletterSubsPage() {
   const [submitted, setSubmitted] = useState(false);
 
-  // Staggered animation for the left-side text content
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -79,20 +78,16 @@ export default function NewsletterSubsPage() {
       </div>
 
       {/* Right Section */}
-      <motion.div
-        initial={{ x: "100%", opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
-        className="w-full flex items-center justify-center px-4 py-8 lg:py-0 lg:h-screen"
-      >
-        <div className="w-full">
+      <div className="w-full flex-1 flex flex-col justify-center lg:flex-row lg:items-center lg:h-screen">
+        {/* THIS IS THE FIX: The container is h-auto on mobile but h-full on desktop for the success view */}
+        <div className={`w-full ${!submitted ? "h-full" : "h-auto lg:h-full"}`}>
           {!submitted ? (
             <NewsletterForm onSuccess={() => setSubmitted(true)} />
           ) : (
             <SubscriptionSuccess />
           )}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

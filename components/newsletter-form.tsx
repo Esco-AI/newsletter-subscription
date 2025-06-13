@@ -57,6 +57,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) return;
     setLoading(true);
     const res = await fetch("/api/newsletter", {
       method: "POST",
@@ -260,10 +261,14 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
           <motion.div variants={fieldVariants}>
             <motion.button
               type="submit"
-              className="w-full mt-4 bg-[#005D9F] text-white text-base font-normal rounded-lg py-3 px-6 hover:bg-[#0070C0] shadow-lg cursor-pointer flex items-center justify-center gap-2"
-              disabled={loading}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
+              className={`w-full mt-4 text-white text-base font-normal rounded-lg py-3 px-6 shadow-lg flex items-center justify-center gap-2 transition-colors duration-300 ${
+                !consent
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#005D9F] hover:bg-[#0070C0] cursor-pointer"
+              }`}
+              disabled={loading || !consent}
+              whileHover={{ scale: !consent ? 1 : 1.03 }}
+              whileTap={{ scale: !consent ? 1 : 0.98 }}
             >
               <span>Subscribe Now</span>
               {loading && (
