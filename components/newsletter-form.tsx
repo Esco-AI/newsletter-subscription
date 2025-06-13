@@ -2,6 +2,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import { getNames } from "country-list";
 import { ChevronDown, CircleHelp, LoaderCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 const AREAS = [
   "IVF & Embryology",
@@ -26,7 +27,6 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   const [loading, setLoading] = useState(false);
 
   const countrySelectRef = useRef<HTMLDivElement>(null);
-
   const countries = useMemo(() => getNames(), []);
 
   useEffect(() => {
@@ -38,21 +38,16 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
         setIsCountryDropdownOpen(false);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [countrySelectRef]);
 
   function handleAreaChange(item: string) {
-    setAreas((prevAreas) => {
-      if (prevAreas.includes(item)) {
-        return prevAreas.filter((area) => area !== item);
-      } else {
-        return [...prevAreas, item];
-      }
-    });
+    setAreas((prev) =>
+      prev.includes(item)
+        ? prev.filter((area) => area !== item)
+        : [...prev, item]
+    );
   }
 
   function handleCountrySelect(selectedCountry: string) {
@@ -63,44 +58,48 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-
     const res = await fetch("/api/newsletter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        country,
-        areas,
-        consent,
-      }),
+      body: JSON.stringify({ name, email, country, areas, consent }),
     });
-
     setLoading(false);
-
-    if (res.ok) {
-      onSuccess();
-    } else {
-      alert("Failed to subscribe. Please try again.");
-    }
+    if (res.ok) onSuccess();
+    else alert("Failed to subscribe. Please try again.");
   }
 
+  const formVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.1 } },
+  };
+
+  const fieldVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.4 } },
+  };
+
   return (
-    <div className="flex items-center justify-center p-3 min-h-screen lg:h-screen">
+    <motion.div
+      className="flex items-center justify-center p-3 min-h-screen lg:h-screen"
+      variants={formVariants}
+      initial="hidden"
+      animate="visible"
+    >
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-2xl shadow-xl py-6 lg:py-[86px] px-4 sm:px-8 md:px-12 lg:px-16 w-full h-full"
       >
         <div className="flex flex-col gap-6">
-          <div className="lg:col-span-2">
+          <motion.div className="lg:col-span-2" variants={fieldVariants}>
             <h2 className="lg:text-[32px] text-xl font-bold text-[#00467F] mb-1">
               Subscribe to our Newsletter
             </h2>
             <p className="text-[#00467F] lg:text-base text-xs">
               Stay updated with the latest in life sciences.
             </p>
-          </div>
-          <div className="space-y-8">
+          </motion.div>
+
+          <motion.div className="space-y-8" variants={fieldVariants}>
             <div>
               <label
                 htmlFor="name"
@@ -142,9 +141,8 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 htmlFor="country-custom-select"
                 className="block text-sm font-medium text-[#4B4B4B] mb-2"
               >
-                Country
+                Country{" "}
                 <span className="text-gray-500 font-normal text-sm">
-                  {" "}
                   (Optional)
                 </span>
               </label>
@@ -185,8 +183,9 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 </div>
               )}
             </div>
-          </div>
-          <div>
+          </motion.div>
+
+          <motion.div variants={fieldVariants}>
             <label className="block text-sm lg:text-base font-medium text-[#4B4B4B] mb-4">
               Area of Interest
             </label>
@@ -206,14 +205,11 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                       className="sr-only"
                     />
                     <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200
-                        ${
-                          areas.includes(item)
-                            ? "border-[#00467F]"
-                            : "border-[#E4E9F2]"
-                        }
-                        group-hover:border-[#00467F]
-                      `}
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                        areas.includes(item)
+                          ? "border-[#00467F]"
+                          : "border-[#E4E9F2]"
+                      } group-hover:border-[#00467F]`}
                     >
                       {areas.includes(item) && (
                         <div className="absolute w-2.5 h-2.5 rounded-full bg-[#00467F] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
@@ -224,8 +220,9 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 </label>
               ))}
             </div>
-          </div>
-          <div className="mt-4">
+          </motion.div>
+
+          <motion.div className="mt-4" variants={fieldVariants}>
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
@@ -258,21 +255,24 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
             <p className="text-xs text-[#8E8E8E] font-normal mt-1 pl-8">
               (Subscribe Now. Unsubscribe anytime)
             </p>
-          </div>
-          <div>
-            <button
+          </motion.div>
+
+          <motion.div variants={fieldVariants}>
+            <motion.button
               type="submit"
               className="w-full mt-4 bg-[#005D9F] text-white text-base font-normal rounded-lg py-3 px-6 hover:bg-[#0070C0] shadow-lg cursor-pointer flex items-center justify-center gap-2"
               disabled={loading}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span>Subscribe Now</span>
               {loading && (
                 <LoaderCircle className="animate-spin w-5 h-5 ml-2" />
               )}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 }

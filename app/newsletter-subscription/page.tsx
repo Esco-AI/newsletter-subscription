@@ -5,15 +5,39 @@ import { useState } from "react";
 import NewsletterForm from "@/components/newsletter-form";
 import SubscriptionSuccess from "@/components/subscription-success";
 import { ChevronLeft } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function NewsletterSubsPage() {
   const [submitted, setSubmitted] = useState(false);
 
+  // Staggered animation for the left-side text content
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { duration: 0.5 },
+    },
+  };
+
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-[url('/E-Blast-bg.png')] bg-cover bg-center">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-[url('/E-Blast-bg.png')] bg-cover bg-center overflow-hidden">
       {/* Left Section */}
       <div className="flex flex-col w-full lg:max-w-1/2">
-        <div className="flex justify-between items-center px-4 pt-6 lg:px-[52px] lg:pt-[53px]">
+        <motion.div
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex justify-between items-center px-4 pt-6 lg:px-[52px] lg:pt-[53px]"
+        >
           <Image
             src="/ESCO-logo-1.svg"
             alt="ESCO Logo"
@@ -30,20 +54,37 @@ export default function NewsletterSubsPage() {
             <ChevronLeft size={24} />
             Back to Our Website
           </a>
-        </div>
-        <div className="flex-1 flex flex-col justify-center px-4 lg:pl-[89px]">
-          <h1 className="text-2xl lg:text-4xl leading-snug font-bold text-white mb-3 mt-5">
+        </motion.div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex-1 flex flex-col justify-center px-4 lg:pl-[89px]"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className="text-2xl lg:text-4xl leading-snug font-bold text-white mb-3 mt-5"
+          >
             Join Lab Minds Like Yours
-          </h1>
-          <p className="text-base lg:text-xl text-white">
+          </motion.h1>
+          <motion.p
+            variants={itemVariants}
+            className="text-base lg:text-xl text-white"
+          >
             Connect with us for expert insights, practical tips, and the latest
             advancements in laboratory safety and innovation.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
 
       {/* Right Section */}
-      <div className="w-full flex items-center justify-center px-4 py-8 lg:py-0 lg:h-screen">
+      <motion.div
+        initial={{ x: "100%", opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+        className="w-full flex items-center justify-center px-4 py-8 lg:py-0 lg:h-screen"
+      >
         <div className="w-full">
           {!submitted ? (
             <NewsletterForm onSuccess={() => setSubmitted(true)} />
@@ -51,7 +92,7 @@ export default function NewsletterSubsPage() {
             <SubscriptionSuccess />
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
