@@ -1,7 +1,7 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { getNames } from "country-list";
-import { ChevronDown, CircleHelp } from "lucide-react";
+import { ChevronDown, CircleHelp, LoaderCircle } from "lucide-react";
 
 const AREAS = [
   "IVF & Embryology",
@@ -23,6 +23,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   const [areas, setAreas] = useState<string[]>([]);
   const [consent, setConsent] = useState(false);
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const countrySelectRef = useRef<HTMLDivElement>(null);
 
@@ -59,16 +60,29 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
     setIsCountryDropdownOpen(false);
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log({
-      name,
-      email,
-      country,
-      areas,
-      consent,
+    setLoading(true);
+
+    const res = await fetch("/api/newsletter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        country,
+        areas,
+        consent,
+      }),
     });
-    onSuccess();
+
+    setLoading(false);
+
+    if (res.ok) {
+      onSuccess();
+    } else {
+      alert("Failed to subscribe. Please try again.");
+    }
   }
 
   return (
@@ -248,9 +262,13 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
           <div>
             <button
               type="submit"
-              className="w-full mt-4 bg-[#005D9F] text-white text-base font-normal rounded-lg py-3 px-6 hover:bg-[#0070C0] shadow-lg cursor-pointer"
+              className="w-full mt-4 bg-[#005D9F] text-white text-base font-normal rounded-lg py-3 px-6 hover:bg-[#0070C0] shadow-lg cursor-pointer flex items-center justify-center gap-2"
+              disabled={loading}
             >
-              Subscribe Now
+              <span>Subscribe Now</span>
+              {loading && (
+                <LoaderCircle className="animate-spin w-5 h-5 ml-2" />
+              )}
             </button>
           </div>
         </div>

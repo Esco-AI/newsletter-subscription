@@ -58,7 +58,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col gap-3 w-full max-w-sm mx-auto lg:flex-row lg:justify-start lg:gap-4 lg:w-auto lg:max-w-full lg:mx-0">
               <button
-                onClick={() => router.push("/newsletter-subs")}
+                onClick={() => router.push("/newsletter-subscription")}
                 className="w-full h-[50px] bg-[#00467F] hover:bg-[#0070C0] transition-colors text-white rounded-sm shadow-md text-base font-normal lg:px-4 lg:w-[275px] cursor-pointer"
               >
                 Subscribe for Expert Insights
