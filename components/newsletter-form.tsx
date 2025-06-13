@@ -1,7 +1,7 @@
 "use client";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { getNames } from "country-list";
-import { ChevronDown, CircleHelp, LoaderCircle } from "lucide-react";
+import { ChevronDown, CircleHelp, LoaderCircle, Search } from "lucide-react";
 import { motion } from "framer-motion";
 
 const AREAS = [
@@ -25,9 +25,17 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
   const [consent, setConsent] = useState(false);
   const [isCountryDropdownOpen, setIsCountryDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // State for the search term
 
   const countrySelectRef = useRef<HTMLDivElement>(null);
   const countries = useMemo(() => getNames(), []);
+
+  // Filter countries based on search term
+  const filteredCountries = useMemo(() => {
+    return countries.filter((c) =>
+      c.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [countries, searchTerm]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -52,6 +60,7 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
 
   function handleCountrySelect(selectedCountry: string) {
     setCountry(selectedCountry);
+    setSearchTerm(""); // Reset search term on selection
     setIsCountryDropdownOpen(false);
   }
 
@@ -118,7 +127,6 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 placeholder="Your Name"
               />
             </div>
-
             <div>
               <label
                 htmlFor="email"
@@ -136,7 +144,6 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                 placeholder="Your Email"
               />
             </div>
-
             <div className="relative" ref={countrySelectRef}>
               <label
                 htmlFor="country-custom-select"
@@ -169,18 +176,34 @@ export default function NewsletterForm({ onSuccess }: NewsletterFormProps) {
                   }`}
                 />
               </div>
-
               {isCountryDropdownOpen && (
-                <div className="absolute z-10 w-full bg-white border border-[#E4E9F2] rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
-                  {countries.map((countryName) => (
-                    <div
-                      key={countryName}
-                      className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-[#4B4B4B] text-sm"
-                      onClick={() => handleCountrySelect(countryName)}
-                    >
-                      {countryName}
+                <div className="absolute z-10 w-full bg-white border border-[#E4E9F2] rounded-lg shadow-lg mt-1 flex flex-col">
+                  {/* Search Input */}
+                  <div className="p-2 border-b border-[#E4E9F2] sticky top-0 bg-white">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="Search for a country..."
+                        className="w-full pl-10 pr-4 py-2 text-sm text-[#4B4B4B] rounded-md outline-none"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        autoFocus
+                      />
                     </div>
-                  ))}
+                  </div>
+                  {/* Country List */}
+                  <div className="max-h-52 overflow-y-auto">
+                    {filteredCountries.map((countryName) => (
+                      <div
+                        key={countryName}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-100 text-[#4B4B4B] text-sm"
+                        onClick={() => handleCountrySelect(countryName)}
+                      >
+                        {countryName}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
